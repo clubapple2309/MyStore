@@ -1,0 +1,68 @@
+﻿@model ClothesStore.DB.Entities.Product
+
+@{
+    ViewBag.Title = "Admin Panel";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="panel">
+    <div class="panel-heading">
+    <h3>Edit product «@Model.Name»</h3>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Admin",
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+     
+<div class="panel-body">
+    @Html.HiddenFor(x => x.ProductId)
+    <label>Name</label>
+    <p> @Html.TextBoxFor(x=>x.Name, null,new { @class = "form-control" })</p>
+    @Html.ValidationMessageFor(x=>x.Name)
+    <label>Description</label>
+    <p> @Html.TextAreaFor(x=>x.Description, new { @class = "form-control", rows = 5 })</p>
+    @Html.ValidationMessageFor(x => x.Description)
+    <label>Category</label>
+    <p> @Html.TextBoxFor(x=>x.Category, null, new { @class = "form-control" })</p>
+    @Html.ValidationMessageFor(x => x.Category)
+    <label>Price</label>
+    <p> @Html.TextBoxFor(x=>x.Price, null, new { @class = "form-control" })</p>
+    @Html.ValidationMessageFor(x => x.Price)
+
+    <div class="form-group">
+        <div style="position:relative;">
+            <label>Picture</label>      
+            <a class='btn-primary btn-xs' href='javascript:;'>
+                Add Img
+                <input type="file" name="Image" size="40"
+                       style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                       onchange='$("#upload-file-info").html($(this).val());'>
+            </a>
+            <span class='label label-info' id="upload-file-info"></span>
+        </div>
+        @if (Model.ImageData == null)
+                {
+            <div class="form-control-static">No image</div>
+        }
+        else
+        {
+            <img class="img-thumbnail" width="150" height="150"
+                 src="@Url.Action("GetImage", "Product",
+                        new { Model.ProductId })" />
+        }
+    </div>
+
+
+
+</div>
+
+        <div class="panel-footer">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back", "Index",null, new
+       {
+           @class = "btn btn-default"
+       })
+        </div>
+    }
+</div>

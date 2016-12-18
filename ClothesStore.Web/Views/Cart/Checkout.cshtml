@@ -1,0 +1,41 @@
+﻿@model ClothesStore.DB.Entities.ShippingDetails
+
+@{
+    ViewBag.Title = "Order form";
+}
+
+<h2>CheckOut Now</h2>
+<p>Please enter your contact details and I will send your goods!</p>
+
+
+@using (Html.BeginForm())
+{
+    <h3>Information</h3>
+    <div class="form-group">
+        <label>Your Name:</label>
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x=>x.Name)
+    </div>
+
+    <h3>Adress</h3>
+    foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (property.PropertyName != "Name" && property.PropertyName != "GiftWrap")
+        {
+            <div class="form-group">
+                <label>@(property.DisplayName)</label>
+                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                @Html.ValidationMessage(property.PropertyName)
+            </div>
+        }
+    }
+    <h3>Options</h3>
+    <div class="checkbox">
+        @Html.Label("Use the gift box?")
+        @Html.EditorFor(x => x.GiftWrap)
+    </div>
+
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Send" />
+    </div>
+}
